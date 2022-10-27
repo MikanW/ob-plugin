@@ -6,11 +6,6 @@ export interface WordCountSettingsTab {
 	docType: string;
 }
 
-export const DEFAULT_SETTINGS: WordCountSettingsTab = {
-	mySetting: 'default',
-	docType: 'chapter'
-}
-
 export class WordCountSettingsTab extends PluginSettingTab {
 	plugin: WordCountPlugin;
 
