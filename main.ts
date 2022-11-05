@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile } from 'obsidian';
 import { WordCountSettingsTab } from 'src/settings'
 
 const DEFAULT_SETTINGS: WordCountSettingsTab = {
@@ -13,9 +13,10 @@ export default class WordCountPlugin extends Plugin {
 		await this.loadSettings();
 
 		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
+		const ribbonIconEl = this.addRibbonIcon('clock', 'Sample Plugin', (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
 			new Notice('This is a notice!');
+			this.addNewTimelineFile();
 		});
 		// Perform additional things with the ribbon
 		ribbonIconEl.addClass('my-plugin-ribbon-class');
@@ -61,6 +62,14 @@ export default class WordCountPlugin extends Plugin {
 			}
 		});
 
+		this.addCommand( {
+			id: 'create_new_timeline_file',
+			name: 'Create new timeline file',
+			checkCallback: () => {
+				this.addNewTimelineFile();
+			}
+		});
+
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new WordCountSettingsTab(this.app, this));
 
@@ -72,6 +81,16 @@ export default class WordCountPlugin extends Plugin {
 
 		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
 		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+	}
+
+	async addNewTimelineFile() {
+		try {
+			const timeline: TFile = await (
+				app.fileManager as any
+			).createNewMarkdownFile('', t('untitled timeline'));
+		} catch (e) {
+			console.error('error when creating new timeline file:', e);
+		}
 	}
 
 	onunload() {
