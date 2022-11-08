@@ -6,6 +6,12 @@ export interface WordCountSettingsTab {
 	docType: string;
 }
 
+export const defaultFrontmatter = [
+	'---',
+	'timelineFile: true',
+	'---'
+].join('\n');
+
 export class WordCountSettingsTab extends PluginSettingTab {
 	plugin: WordCountPlugin;
 

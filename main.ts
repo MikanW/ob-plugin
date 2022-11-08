@@ -1,7 +1,7 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile, TFolder } from 'obsidian';
 
 
-import { WordCountSettingsTab } from 'src/settings'
+import { WordCountSettingsTab, defaultFrontmatter } from 'src/settings'
 
 const DEFAULT_SETTINGS: WordCountSettingsTab = {
 	mySetting: 'default',
@@ -93,7 +93,7 @@ export default class WordCountPlugin extends Plugin {
 			).createNewMarkdownFile('', 'untitled timeline');
 
 			// write yaml frontmatter
-			await app.vault.modify(timeline, 'hello, world!');
+			await app.vault.modify(timeline, defaultFrontmatter);
 		} catch (e) {
 			console.error('error when creating new timeline file:', e);
 		}
